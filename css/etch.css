@@ -3,7 +3,11 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  
+  background-color: white;
+}
+
+.body-glow {
+  background-color: black;
 }
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
@@ -26,12 +30,24 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
   cursor: grab;
 }
 
-#etch-space {
+.etch-border-glow {
+background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
+  box-shadow: 5px 5px 6px 0.1px rgb(190, 190, 190) inset,
+  -5px -5px 8px 0.1px rgb(0, 0, 0) inset,
+  5px 5px 8px 0.1px grey;
+}
+
+.etch-space {
   /* border: 10px solid gray;
   border-style: inset; */
   border-radius: 10px;
   box-shadow: -5px -5px 6px 0.1px rgb(51, 51, 51),
   5px 5px 8px 0.1px rgb(248, 198, 198);
+}
+
+.etch-space-glow {
+  box-shadow: -5px -5px 6px 0.1px rgb(51, 51, 51),
+  5px 5px 8px 0.1px rgb(167, 167, 167);
 }
 
 .knob {
@@ -46,12 +62,20 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
   bottom: 20px;
 }
 
+.knob-glow {
+  background-color: #acffb2;
+}
+
 /* .knob:hover .knob-inner {
     background: radial-gradient(circle, rgba(242,242,242,1) 0%, rgba(255,255,255,1) 6%, rgb(184, 184, 184) 100%);
 } */
 
 .knob-back {
   box-shadow: 8px 8px 15px 0.1px rgb(119, 48, 48);
+}
+
+.knob-back-glow {
+  box-shadow: 8px 8px 50px 0.1px #d9ffdc;
 }
 
 
@@ -71,6 +95,11 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
   color: rgb(241, 234, 134);
   text-shadow: -1px -1px 1px #fff, 2px 2px 2px #000;
   
+}
+
+.title-glow span {
+  color: #acffb2;
+  text-shadow: -1px -1px 1px #fff, 2px 2px 2px #000;
 }
 
 .cursive {
@@ -102,6 +131,11 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
 
 }
 
+.fas-glow {
+  color: #acffb2;
+  text-shadow: -1px -1px 1px #fff, 2px 2px 2px #000;
+}
+
 .fa-arrows-alt-h {
   bottom: 110px;
   left: 50px;
@@ -127,12 +161,21 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
   line-height: 30px;
 }
 
+.instructions-glow {
+  color: #acffb2;
+  text-shadow: -0.1px -0.1px 0.1px #d9ffdc, 2px 2px 2px #000;
+}
+
 .knob-inner {
   height: 70px;
   width: 70px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(242,242,242,1) 0%, rgba(255,255,255,1) 6%, rgba(208,208,208,1) 100%);
   z-index: 1;
+}
+
+.knob-inner-glow {
+  background: radial-gradient(circle, #acffb2 0%, #d9ffdc 6%, #21af2a 100%);
 }
 
 .diameter {
@@ -193,4 +236,9 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
 }
 .line-18 {
   transform: rotate(170deg);
+}
+
+#glow-button {
+  position: fixed;
+  top: 0px;
 }

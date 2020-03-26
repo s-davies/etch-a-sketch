@@ -50,8 +50,41 @@ export default class EtchASketch {
       onRelease: () => $(".etch-border").css("cursor", "grab"),
       onDrag: this.turnRightKnob
     });
+    this.activateGlowMode = this.activateGlowMode.bind(this);
+    $("#glow-button").on('click', this.activateGlowMode);
   }
 
+  activateGlowMode() {
+    $("body").toggleClass("body-glow");
+    $(".etch-border").toggleClass("etch-border-glow");
+    $(".etch-space").toggleClass("etch-space-glow");
+    $(".knob").toggleClass("knob-glow");
+    $(".knob-back").toggleClass("knob-back-glow");
+    $(".title").toggleClass("title-glow");
+    $(".fas").toggleClass("fas-glow");
+    $(".instructions").toggleClass("instructions-glow");
+    $(".knob-inner").toggleClass("knob-inner-glow");
+
+    if ($("body").hasClass("body-glow")) {
+      this.sketchArea.drawBackground(this.ctx);
+      this.ctx.strokeStyle = "#03f111";
+      //redraw the line 3 times so it isn't see through
+      for (let i = 0; i < 3; i++) {
+        this.ctx.lineTo(this.currentLineX, this.currentLineY);
+        this.ctx.moveTo(this.currentLineX, this.currentLineY);
+        this.ctx.stroke();
+      }
+    } else {
+      this.sketchArea.drawBackground(this.ctx);
+      this.ctx.strokeStyle = "black";
+      //redraw the line 3 times so it isn't see through
+      for (let i = 0; i < 3; i++) {
+        this.ctx.lineTo(this.currentLineX, this.currentLineY);
+        this.ctx.moveTo(this.currentLineX, this.currentLineY);
+        this.ctx.stroke();
+      }
+    }
+  }
 
   turnLeftKnob(e) {
     if (this.leftKnobDraggable[0].rotation < this.leftKnobRotation) {
