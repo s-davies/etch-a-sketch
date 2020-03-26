@@ -46,10 +46,9 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
   bottom: 20px;
 }
 
-.knob:hover .knob-inner {
+/* .knob:hover .knob-inner {
     background: radial-gradient(circle, rgba(242,242,242,1) 0%, rgba(255,255,255,1) 6%, rgb(184, 184, 184) 100%);
-  /* background: red; */
-}
+} */
 
 .knob-back {
   box-shadow: 8px 8px 15px 0.1px rgb(119, 48, 48);

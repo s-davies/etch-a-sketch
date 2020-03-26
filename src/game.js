@@ -1,4 +1,5 @@
 import SketchArea from "./sketch_area";
+// import Draggable from "gsap/Draggable";
 
 const KEYSPEED = 2;
 const KNOBSPEED = 4;
@@ -35,6 +36,7 @@ export default class EtchASketch {
       stop: this.stopShakeTimer,
       
     });
+    Draggable.create(".knob", { type: "rotation" });
   }
 
   startShakeTimer() {
