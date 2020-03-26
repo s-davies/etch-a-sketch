@@ -1,5 +1,4 @@
 import SketchArea from "./sketch_area";
-// import Draggable from "gsap/Draggable";
 
 const KEYSPEED = 2;
 const KNOBSPEED = 4;
@@ -16,6 +15,8 @@ export default class EtchASketch {
     this.startShakeTimer = this.startShakeTimer.bind(this);
     this.measureShake = this.measureShake.bind(this);
     this.stopShakeTimer = this.stopShakeTimer.bind(this);
+    this.turnLeftKnob = this.turnLeftKnob.bind(this);
+    this.turnRightKnob = this.turnRightKnob.bind(this);
     this.shakeCount = 0;
     this.lastShakeDir = "none";
     this.prevLeft = $(".etch-border").position().left;
@@ -36,7 +37,50 @@ export default class EtchASketch {
       stop: this.stopShakeTimer,
       
     });
-    Draggable.create(".knob", { type: "rotation" });
+    this.leftKnobDraggable = Draggable.create(".left-front", { 
+      type: "rotation",
+      onPress: () => $(".etch-border").css("cursor", "grabbing"),
+      onRelease: () => $(".etch-border").css("cursor", "grab"),
+      onDrag: this.turnLeftKnob
+    });
+
+    this.rightKnobDraggable = Draggable.create(".right-front", {
+      type: "rotation",
+      onPress: () => $(".etch-border").css("cursor", "grabbing"),
+      onRelease: () => $(".etch-border").css("cursor", "grab"),
+      onDrag: this.turnRightKnob
+    });
+  }
+
+
+  turnLeftKnob(e) {
+    if (this.leftKnobDraggable[0].rotation < this.leftKnobRotation) {
+      this.currentLineX -= KEYSPEED/2;
+      this.ctx.lineTo(this.currentLineX, this.currentLineY);
+      this.ctx.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke();
+    } else if (this.leftKnobDraggable[0].rotation > this.leftKnobRotation) {
+      this.currentLineX += KEYSPEED/2;
+      this.ctx.lineTo(this.currentLineX, this.currentLineY);
+      this.ctx.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke();
+    }
+    this.leftKnobRotation = this.leftKnobDraggable[0].rotation;
+  }
+
+  turnRightKnob(e) {
+    if (this.rightKnobDraggable[0].rotation < this.rightKnobRotation) {
+      this.currentLineY += KEYSPEED / 2;
+      this.ctx.lineTo(this.currentLineX, this.currentLineY);
+      this.ctx.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke();
+    } else if (this.rightKnobDraggable[0].rotation > this.rightKnobRotation) {
+      this.currentLineY -= KEYSPEED / 2;
+      this.ctx.lineTo(this.currentLineX, this.currentLineY);
+      this.ctx.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke();
+    }
+    this.rightKnobRotation = this.rightKnobDraggable[0].rotation;
   }
 
   startShakeTimer() {
@@ -132,6 +176,7 @@ export default class EtchASketch {
   releaseKey(e) {
     this.keys[e.keyCode] = false;
   }
+
 
   drawLine(direction) {
     if (direction === "left") {
