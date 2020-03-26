@@ -9,34 +9,50 @@ export default class EtchASketch {
     this.drawLine = this.drawLine.bind(this);
     this.pressKey = this.pressKey.bind(this);
     this.releaseKey = this.releaseKey.bind(this);
+    this.clearSketch = this.clearSketch.bind(this);
     this.keys = [];
     this.leftKnobRotation = 0;
     this.rightKnobRotation = 0;
     this.restart();
     $(document).on('keydown', this.pressKey);
     $(document).on('keyup', this.releaseKey);
+
+    $(".etch-border").draggable({
+      revert: true,
+      revertDuration: 200,
+      start: this.clearSketch
+    });
+  }
+
+  clearSketch() {
+    // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+    this.ctx.beginPath();
+    // this.currentLineX = this.dimensions.width / 2;
+    // this.currentLineY = this.dimensions.height / 2;
+    this.ctx.moveTo(this.currentLineX, this.currentLineY);
+    this.sketchArea.animate(this.ctx);
   }
 
   pressKey(e) {
     e.preventDefault();
     this.keys[e.keyCode] = true;
     const that = this;
-    if (this.keys[37]) {
+    if (this.keys[37] && this.currentLineX > 0) {
       this.drawLine("left");
       that.leftKnobRotation -= KNOBSPEED;
       $('.left-front').css("transform", "rotateZ(" + that.leftKnobRotation + "deg)");
     } 
-    if (this.keys[38]) {
+    if (this.keys[38] && this.currentLineY > 0) {
       this.drawLine("up");
       that.rightKnobRotation += KNOBSPEED;
       $('.right-front').css("transform", "rotateZ(" + that.rightKnobRotation + "deg)");
     } 
-    if (this.keys[39]) {
+    if (this.keys[39] && this.currentLineX < this.dimensions.width) {
       this.drawLine("right");
       that.leftKnobRotation += KNOBSPEED;
       $('.left-front').css("transform", "rotateZ(" + that.leftKnobRotation + "deg)");
     } 
-    if (this.keys[40]) {
+    if (this.keys[40] && this.currentLineY < this.dimensions.height ) {
       this.drawLine("down");
       that.rightKnobRotation -= KNOBSPEED;
       $('.right-front').css("transform", "rotateZ(" + that.rightKnobRotation + "deg)");

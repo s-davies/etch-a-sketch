@@ -2,7 +2,16 @@ export default class SketchArea {
   constructor(dimensions) {
     this.dimensions = dimensions;
     
+    $(".etch-border").on('mousedown', (e) => {
+      $(".etch-border").css("cursor", "grabbing");
+    });
+    $(".etch-border").on('mouseup', (e) => {
+      $(".etch-border").css("cursor", "grab");
+    });
   }
+
+  
+
 
   animate(ctx) {
     this.drawBackground(ctx);
