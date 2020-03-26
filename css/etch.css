@@ -3,6 +3,11 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  
+}
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
 .etch-border {
@@ -117,9 +122,10 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
   position: absolute;
   text-align: center;
   text-transform: uppercase;
-  bottom: 50px;
+  bottom: 30px;
   font-family: 'Roboto', sans-serif;
   letter-spacing: 1.5px;
+  line-height: 30px;
 }
 
 .knob-inner {
