@@ -1,4 +1,4 @@
-export default class Level {
+export default class SketchArea {
   constructor(dimensions) {
     this.dimensions = dimensions;
     

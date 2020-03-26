@@ -38,8 +38,11 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
   border-radius: 50%;
   background-color: white;
   position: absolute;
-  box-shadow: 8px 8px 15px 0.1px rgb(119, 48, 48);
   bottom: 20px;
+}
+
+.knob-back {
+  box-shadow: 8px 8px 15px 0.1px rgb(119, 48, 48);
 }
 
 
@@ -126,7 +129,8 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
   position: absolute;
   height: 100%;
   width: 1px;
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(218, 218, 218);
+  /* background-color: black; */
 }
 
 .line-2 {
