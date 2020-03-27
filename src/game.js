@@ -18,8 +18,10 @@ export default class EtchASketch {
     this.turnLeftKnob = this.turnLeftKnob.bind(this);
     this.turnRightKnob = this.turnRightKnob.bind(this);
     this.changeLineColor = this.changeLineColor.bind(this);
-    this.paths = [];
+    this.paths = {};
+    this.pathsCount = 0;
     this.currentLineColor = "black";
+    this.currentLineWidth = "black";
     this.shakeCount = 0;
     this.lastShakeDir = "none";
     this.prevLeft = $(".etch-border").position().left;
@@ -67,13 +69,15 @@ export default class EtchASketch {
   }
 
   changeLineColor(color) {
-      this.ctx.lineWidth = 1;
-      this.ctx.beginPath();
-      this.ctx.moveTo(this.currentLineX, this.currentLineY);
-      this.ctx.lineTo(this.currentLineX, this.currentLineY);
+      // this.ctx.lineWidth = 1;
+      // this.ctx.beginPath();
+      this.pathsCount += 1;
       this.currentLineColor = color;
+      this.paths[this.pathsCount] = { path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth };
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
       this.ctx.strokeStyle = color;
-      this.ctx.stroke();
+      this.ctx.stroke(this.paths[this.pathsCount].path);
 
   }
 
@@ -88,22 +92,23 @@ export default class EtchASketch {
     $(".instructions").toggleClass("instructions-glow");
     $(".knob-inner").toggleClass("knob-inner-glow");
     $("canvas").toggleClass("canvas-glow");
-
+    this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
     if ($("body").hasClass("body-glow")) {
-      this.ctx.strokeStyle = "#03f111";
-      //redraw the line 3 times so it isn't see through
-      for (let i = 0; i < 3; i++) {
-        this.ctx.lineTo(this.currentLineX, this.currentLineY);
-        this.ctx.moveTo(this.currentLineX, this.currentLineY);
-        this.ctx.stroke();
+      for (let i = 0; i <= this.pathsCount; i++) {
+        this.ctx.strokeStyle = "#03f111";
+        //redraw the line 3 times so it isn't see through
+        for (let j = 0; j < 3; j++) {
+          this.ctx.stroke(this.paths[i].path);
+        }
+        // debugger
       }
     } else {
-      this.ctx.strokeStyle = this.currentLineColor;
-      //redraw the line 3 times so it isn't see through
-      for (let i = 0; i < 3; i++) {
-        this.ctx.lineTo(this.currentLineX, this.currentLineY);
-        this.ctx.moveTo(this.currentLineX, this.currentLineY);
-        this.ctx.stroke();
+      for (let i = 0; i <= this.pathsCount; i++) {
+        this.ctx.strokeStyle = this.paths[i].color;
+        //redraw the line 3 times so it isn't see through
+        for (let j = 0; j < 3; j++) {
+          this.ctx.stroke(this.paths[i].path);
+        }
       }
     }
   }
@@ -111,14 +116,14 @@ export default class EtchASketch {
   turnLeftKnob(e) {
     if (this.leftKnobDraggable[0].rotation < this.leftKnobRotation) {
       this.currentLineX -= KEYSPEED/2;
-      this.ctx.lineTo(this.currentLineX, this.currentLineY);
-      this.ctx.moveTo(this.currentLineX, this.currentLineY);
-      this.ctx.stroke();
+      this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke(this.paths[this.pathsCount].path);
     } else if (this.leftKnobDraggable[0].rotation > this.leftKnobRotation) {
       this.currentLineX += KEYSPEED/2;
-      this.ctx.lineTo(this.currentLineX, this.currentLineY);
-      this.ctx.moveTo(this.currentLineX, this.currentLineY);
-      this.ctx.stroke();
+      this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke(this.paths[this.pathsCount].path);
     }
     this.leftKnobRotation = this.leftKnobDraggable[0].rotation;
   }
@@ -126,14 +131,14 @@ export default class EtchASketch {
   turnRightKnob(e) {
     if (this.rightKnobDraggable[0].rotation < this.rightKnobRotation) {
       this.currentLineY += KEYSPEED / 2;
-      this.ctx.lineTo(this.currentLineX, this.currentLineY);
-      this.ctx.moveTo(this.currentLineX, this.currentLineY);
-      this.ctx.stroke();
+      this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke(this.paths[this.pathsCount].path);
     } else if (this.rightKnobDraggable[0].rotation > this.rightKnobRotation) {
       this.currentLineY -= KEYSPEED / 2;
-      this.ctx.lineTo(this.currentLineX, this.currentLineY);
-      this.ctx.moveTo(this.currentLineX, this.currentLineY);
-      this.ctx.stroke();
+      this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke(this.paths[this.pathsCount].path);
     }
     this.rightKnobRotation = this.rightKnobDraggable[0].rotation;
   }
@@ -191,11 +196,15 @@ export default class EtchASketch {
 
   clearSketch() {
     // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
-    this.ctx.beginPath();
+    // this.ctx.beginPath();
     // this.currentLineX = this.dimensions.width / 2;
     // this.currentLineY = this.dimensions.height / 2;
-    this.ctx.moveTo(this.currentLineX, this.currentLineY);
-    this.sketchArea.animate(this.ctx);
+    this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+    this.paths = {};
+    this.pathsCount = 0;
+    this.paths[this.pathsCount] = { path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth };
+    this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+    // this.sketchArea.animate(this.ctx);
   }
 
   pressKey(e) {
@@ -236,30 +245,30 @@ export default class EtchASketch {
   drawLine(direction) {
     if (direction === "left") {
       this.currentLineX -= KEYSPEED;
-      this.ctx.lineTo(this.currentLineX, this.currentLineY);
-      this.ctx.moveTo(this.currentLineX, this.currentLineY);
-      this.ctx.stroke();
+      this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke(this.paths[this.pathsCount].path);
     }
 
     if (direction === "right") {
       this.currentLineX += KEYSPEED;
-      this.ctx.lineTo(this.currentLineX, this.currentLineY);
-      this.ctx.moveTo(this.currentLineX, this.currentLineY);
-      this.ctx.stroke();
+      this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke(this.paths[this.pathsCount].path);
     }
 
     if (direction === "down") {
       this.currentLineY += KEYSPEED;
-      this.ctx.lineTo(this.currentLineX, this.currentLineY);
-      this.ctx.moveTo(this.currentLineX, this.currentLineY);
-      this.ctx.stroke();
+      this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke(this.paths[this.pathsCount].path);
     }
 
     if (direction === "up") {
       this.currentLineY -= KEYSPEED;
-      this.ctx.lineTo(this.currentLineX, this.currentLineY);
-      this.ctx.moveTo(this.currentLineX, this.currentLineY);
-      this.ctx.stroke();
+      this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.stroke(this.paths[this.pathsCount].path);
     }
   }
 
@@ -274,11 +283,12 @@ export default class EtchASketch {
     
     this.animate();
     //set starting position
-    this.ctx.lineWidth = 1;
-    this.ctx.beginPath();
+    // this.ctx.lineWidth = 1;
+    this.paths[this.pathsCount] = {path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth};
+    // this.ctx.beginPath();
     this.currentLineX = this.dimensions.width / 2;
     this.currentLineY = this.dimensions.height / 2;
-    this.ctx.moveTo(this.currentLineX, this.currentLineY);
+    this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
     // this.ctx.lineTo(140, 140);
     // this.ctx.stroke();
   }
