@@ -17,6 +17,9 @@ export default class EtchASketch {
     this.stopShakeTimer = this.stopShakeTimer.bind(this);
     this.turnLeftKnob = this.turnLeftKnob.bind(this);
     this.turnRightKnob = this.turnRightKnob.bind(this);
+    this.changeLineColor = this.changeLineColor.bind(this);
+    this.paths = [];
+    this.currentLineColor = "black";
     this.shakeCount = 0;
     this.lastShakeDir = "none";
     this.prevLeft = $(".etch-border").position().left;
@@ -52,6 +55,26 @@ export default class EtchASketch {
     });
     this.activateGlowMode = this.activateGlowMode.bind(this);
     $("#glow-button").on('click', this.activateGlowMode);
+
+    $('#color-picker').spectrum({
+      type: "color",
+      showAlpha: false,
+      allowEmpty: false,
+      showInput: true,
+      containerClassName: 'color-picker-container',
+      change: (color) => { this.changeLineColor(color.toHexString()) }
+    });
+  }
+
+  changeLineColor(color) {
+      this.ctx.lineWidth = 1;
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.currentLineX, this.currentLineY);
+      this.ctx.lineTo(this.currentLineX, this.currentLineY);
+      this.currentLineColor = color;
+      this.ctx.strokeStyle = color;
+      this.ctx.stroke();
+
   }
 
   activateGlowMode() {
@@ -64,9 +87,9 @@ export default class EtchASketch {
     $(".fas").toggleClass("fas-glow");
     $(".instructions").toggleClass("instructions-glow");
     $(".knob-inner").toggleClass("knob-inner-glow");
+    $("canvas").toggleClass("canvas-glow");
 
     if ($("body").hasClass("body-glow")) {
-      this.sketchArea.drawBackground(this.ctx);
       this.ctx.strokeStyle = "#03f111";
       //redraw the line 3 times so it isn't see through
       for (let i = 0; i < 3; i++) {
@@ -75,8 +98,7 @@ export default class EtchASketch {
         this.ctx.stroke();
       }
     } else {
-      this.sketchArea.drawBackground(this.ctx);
-      this.ctx.strokeStyle = "black";
+      this.ctx.strokeStyle = this.currentLineColor;
       //redraw the line 3 times so it isn't see through
       for (let i = 0; i < 3; i++) {
         this.ctx.lineTo(this.currentLineX, this.currentLineY);

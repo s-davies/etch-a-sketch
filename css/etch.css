@@ -1,3 +1,11 @@
+canvas {
+  background: linear-gradient(135deg, #c9c6c6 0%,  #aaaaaa 100%);
+}
+
+.canvas-glow {
+  background: linear-gradient(135deg, #131313 0%,  #000000 100%);
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -241,4 +249,10 @@ background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
 #glow-button {
   position: fixed;
   top: 0px;
+}
+
+.sp-original-input-container {
+  position: fixed;
+  top: 0px;
+  left: 0px;
 }
