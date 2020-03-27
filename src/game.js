@@ -101,6 +101,7 @@ export default class EtchASketch {
       }
       this.reStroke();
     });
+
   }
   //////////////////////////////////////////////////////////////////////////////
   setImgBG(e) {
@@ -136,6 +137,7 @@ export default class EtchASketch {
       },
         reader.onerror = error => console.log(error);
     };
+    
     
   }
 
