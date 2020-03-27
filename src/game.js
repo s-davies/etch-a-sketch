@@ -28,6 +28,8 @@ export default class EtchASketch {
     this.etchBG = "linear-gradient(135deg, #c9c6c6 0%,  #aaaaaa 100%)";
     this.etchBGImg = null;
     this.showImg = true;
+    this.imgWidth = 0;
+    this.imgHeight = 0;
     this.shakeCount = 0;
     this.lastShakeDir = "none";
     this.prevLeft = $(".etch-border").position().left;
@@ -111,6 +113,16 @@ export default class EtchASketch {
       img.onload = () => {
         // img.width and img.height will contain the original dimensions
         this.etchBGImg = img;
+        //set aspect ratio of image so it won't appear stretched or scrunched
+        const canvasAspectRatio = this.dimensions.width / this.dimensions.height;
+        const imgAspectRatio = img.width / img.height;
+        if (imgAspectRatio >= canvasAspectRatio) {
+          this.imgWidth = this.dimensions.width;
+          this.imgHeight = img.height * (this.dimensions.width / img.width);
+        } else {
+          this.imgHeight = this.dimensions.height;
+          this.imgWidth = img.width * (this.dimensions.height / img.height);
+        }
         this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
         this.drawImg();
         this.ctx.canvas.toBlob((blob) => {
@@ -129,7 +141,12 @@ export default class EtchASketch {
 
   drawImg() {
     this.ctx.globalAlpha = 0.5;
-    this.ctx.drawImage(this.etchBGImg, 0, 0, this.dimensions.width, this.dimensions.height);
+    //center and draw image based on aspect ratio
+    if (this.imgWidth === this.dimensions.width) {
+      this.ctx.drawImage(this.etchBGImg, 0, (this.dimensions.height - this.imgHeight) / 2, this.imgWidth, this.imgHeight);
+    } else {
+      this.ctx.drawImage(this.etchBGImg, (this.dimensions.width - this.imgWidth) / 2, 0, this.imgWidth, this.imgHeight);
+    }
     this.ctx.globalAlpha = 1;
   }
 
