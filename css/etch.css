@@ -22,6 +22,14 @@ body {
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
+.toggle {
+  display: none;
+}
+
+.toggle-show {
+  display: block;
+}
+
 .etch-border {
   display: flex;
   justify-content: center;

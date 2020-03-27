@@ -18,11 +18,16 @@ export default class EtchASketch {
     this.turnLeftKnob = this.turnLeftKnob.bind(this);
     this.turnRightKnob = this.turnRightKnob.bind(this);
     this.changeLineColor = this.changeLineColor.bind(this);
+    this.setImgBG = this.setImgBG.bind(this);
+    this.reStroke = this.reStroke.bind(this);
+    this.drawImg = this.drawImg.bind(this);
     this.paths = {};
     this.pathsCount = 0;
     this.currentLineColor = "black";
     this.currentLineWidth = "black";
     this.etchBG = "linear-gradient(135deg, #c9c6c6 0%,  #aaaaaa 100%)";
+    this.etchBGImg = null;
+    this.showImg = true;
     this.shakeCount = 0;
     this.lastShakeDir = "none";
     this.prevLeft = $(".etch-border").position().left;
@@ -79,6 +84,53 @@ export default class EtchASketch {
         $("canvas").css("background", color); 
       }
     });
+
+    $("#file").on("change", (event) => {
+      this.setImgBG(event);
+    });
+
+    $(".toggle").on("click", () => {
+      this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+      if (this.showImg) {
+        this.showImg = false;
+      } else {
+        this.showImg = true;
+        this.drawImg();
+      }
+      this.reStroke();
+    });
+  }
+  //////////////////////////////////////////////////////////////////////////////
+  setImgBG(e) {
+    const fileName = e.target.files[0].name;
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = event => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        // img.width and img.height will contain the original dimensions
+        this.etchBGImg = img;
+        this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+        this.drawImg();
+        this.ctx.canvas.toBlob((blob) => {
+          const file = new File([blob], fileName, {
+            type: 'image/jpeg',
+            lastModified: Date.now()
+          });
+        }, 'image/jpeg', 1);
+        this.reStroke();
+        $(".toggle").addClass("toggle-show");
+      },
+        reader.onerror = error => console.log(error);
+    };
+    
+  }
+
+  drawImg() {
+    this.ctx.globalAlpha = 0.5;
+    this.ctx.drawImage(this.etchBGImg, 0, 0, this.dimensions.width, this.dimensions.height);
+    this.ctx.globalAlpha = 1;
   }
 
   changeLineColor(color) {
@@ -106,18 +158,26 @@ export default class EtchASketch {
     // $("canvas").toggleClass("canvas-glow");
     
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+    if (this.etchBGImg && this.showImg) this.drawImg();
     if ($("body").hasClass("body-glow")) {
       $("canvas").css("background", "linear-gradient(135deg, #131313 0%,  #000000 100%)");
+      this.reStroke();
+    } else {
+      $("canvas").css("background", this.etchBG);
+      this.reStroke();
+    }
+  }
+
+  reStroke() {
+    if ($("body").hasClass("body-glow")) {
       for (let i = 0; i <= this.pathsCount; i++) {
         this.ctx.strokeStyle = "#03f111";
         //redraw the line 3 times so it isn't see through
         for (let j = 0; j < 3; j++) {
           this.ctx.stroke(this.paths[i].path);
         }
-        // debugger
       }
     } else {
-      $("canvas").css("background", this.etchBG);
       for (let i = 0; i <= this.pathsCount; i++) {
         this.ctx.strokeStyle = this.paths[i].color;
         //redraw the line 3 times so it isn't see through
@@ -215,6 +275,8 @@ export default class EtchASketch {
     // this.currentLineX = this.dimensions.width / 2;
     // this.currentLineY = this.dimensions.height / 2;
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+    //redraw an image if it has been uploaded
+    if (this.etchBGImg && this.showImg) this.drawImg();
     this.paths = {};
     this.pathsCount = 0;
     this.paths[this.pathsCount] = { path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth };
