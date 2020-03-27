@@ -22,6 +22,7 @@ export default class EtchASketch {
     this.pathsCount = 0;
     this.currentLineColor = "black";
     this.currentLineWidth = "black";
+    this.etchBG = "linear-gradient(135deg, #c9c6c6 0%,  #aaaaaa 100%)";
     this.shakeCount = 0;
     this.lastShakeDir = "none";
     this.prevLeft = $(".etch-border").position().left;
@@ -66,6 +67,18 @@ export default class EtchASketch {
       containerClassName: 'color-picker-container',
       change: (color) => { this.changeLineColor(color.toHexString()) }
     });
+
+    $('#bg-color-picker').spectrum({
+      type: "color",
+      showAlpha: false,
+      allowEmpty: false,
+      showInput: true,
+      containerClassName: 'color-picker-container',
+      change: (color) => { 
+        this.etchBG = color;
+        $("canvas").css("background", color); 
+      }
+    });
   }
 
   changeLineColor(color) {
@@ -78,7 +91,6 @@ export default class EtchASketch {
       this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
       this.ctx.strokeStyle = color;
       this.ctx.stroke(this.paths[this.pathsCount].path);
-
   }
 
   activateGlowMode() {
@@ -91,9 +103,11 @@ export default class EtchASketch {
     $(".fas").toggleClass("fas-glow");
     $(".instructions").toggleClass("instructions-glow");
     $(".knob-inner").toggleClass("knob-inner-glow");
-    $("canvas").toggleClass("canvas-glow");
+    // $("canvas").toggleClass("canvas-glow");
+    
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
     if ($("body").hasClass("body-glow")) {
+      $("canvas").css("background", "linear-gradient(135deg, #131313 0%,  #000000 100%)");
       for (let i = 0; i <= this.pathsCount; i++) {
         this.ctx.strokeStyle = "#03f111";
         //redraw the line 3 times so it isn't see through
@@ -103,6 +117,7 @@ export default class EtchASketch {
         // debugger
       }
     } else {
+      $("canvas").css("background", this.etchBG);
       for (let i = 0; i <= this.pathsCount; i++) {
         this.ctx.strokeStyle = this.paths[i].color;
         //redraw the line 3 times so it isn't see through
