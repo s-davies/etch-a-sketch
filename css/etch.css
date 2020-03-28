@@ -1,10 +1,16 @@
-canvas {
+/* canvas {
   background: linear-gradient(135deg, #c9c6c6 0%,  #aaaaaa 100%);
-}
+} */
 
 /* .canvas-glow {
   background: linear-gradient(135deg, #131313 0%,  #000000 100%);
 } */
+
+#image-merge {
+  position: fixed;
+  top: 0px;
+  z-index: 3;
+}
 
 body {
   display: flex;
@@ -22,13 +28,35 @@ body {
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
+#download-button {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+#file {
+  position: fixed;
+  top: 0px;
+  left: 100px;
+}
+
+.sp-replacer {
+  top: -400px;
+  left: 0px;
+}
+
 .toggle {
   display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
 }
 
 .toggle-show {
   display: block;
 }
+
+
 
 .etch-border {
   display: flex;
@@ -59,11 +87,13 @@ background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
   border-radius: 10px;
   box-shadow: -5px -5px 6px 0.1px rgb(51, 51, 51),
   5px 5px 8px 0.1px rgb(248, 198, 198);
+  background: linear-gradient(135deg, #c9c6c6 0%,  #aaaaaa 100%);
 }
 
 .etch-space-glow {
   box-shadow: -5px -5px 6px 0.1px rgb(51, 51, 51),
   5px 5px 8px 0.1px rgb(167, 167, 167);
+  /* background: linear-gradient(135deg, #131313 0%,  #000000 100%); */
 }
 
 .knob {

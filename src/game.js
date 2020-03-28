@@ -21,8 +21,11 @@ export default class EtchASketch {
     this.setImgBG = this.setImgBG.bind(this);
     this.reStroke = this.reStroke.bind(this);
     this.drawImg = this.drawImg.bind(this);
+    this.persist = this.persist.bind(this);
+    this.reDraw = this.reDraw.bind(this);
     this.paths = {};
     this.pathsCount = 0;
+    this.pathPoints = {};
     this.currentLineColor = "black";
     this.currentLineWidth = "black";
     this.etchBG = "linear-gradient(135deg, #c9c6c6 0%,  #aaaaaa 100%)";
@@ -83,7 +86,7 @@ export default class EtchASketch {
       containerClassName: 'color-picker-container',
       change: (color) => { 
         this.etchBG = color;
-        $("canvas").css("background", color); 
+        $(".etch-space").css("background", color); 
       }
     });
 
@@ -102,8 +105,68 @@ export default class EtchASketch {
       this.reStroke();
     });
 
+    $("#redraw").on("click", this.reDraw);
+
+    // $("#download-button").on("click", () => {
+      // html2canvas(document.getElementsByClassName("etch-border")[0]).then(function (cvs) {
+      //   let image = cvs.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
+      //   let link = document.createElement('a');
+      //   link.download = "my-image.png";
+      //   link.href = image;
+      //   link.click();
+      // });
+      // var mcvs = document.getElementById("image-merge");
+      // var mctx = mcvs.getContext("2d");
+      // var imageObj1 = new Image();
+      // var imageObj2 = new Image();
+      // imageObj1.src = "./images/frame.png";
+      
+      // imageObj1.onload = function () {
+      //   imageObj1.setAttribute('crossorigin', 'anonymous');
+      //   mctx.drawImage(imageObj1, 0, 0, imageObj1.width, imageObj1.height);
+      //   imageObj2.src = canvas.toDataURL();
+      //   // imageObj2.src = "./images/bird.png";
+      //   imageObj2.crossOrigin = "anonymous";
+      //   imageObj2.onload = function () {
+      //     mctx.drawImage(imageObj2, 120, 120, canvas.width, canvas.height);
+      //     // var img = mcvs.toDataURL("image/png");
+      //     // document.write('<img src="' + img + '" width="' + imageObj1.width + '" height="' + imageObj1.height + '"/>');
+         
+      //       let image = mcvs.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
+      //       // let link = document.createElement('a');
+      //       // link.download = "my-image.png";
+      //       // link.href = image;
+      //       // link.click();
+      //   }
+
+
+      // };
+
+    // });
   }
   //////////////////////////////////////////////////////////////////////////////
+
+  reDraw() {
+    this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+    let timeoutMultiplier = 0;
+    for (let i = 0; i <= this.pathsCount; i++) {
+      const points = this.pathPoints[i].points;
+      let tempPath = new Path2D();
+      for (let j = 0; j < points.length; j++) {
+        // debugger
+        setTimeout(() => {
+          const coordinates = points[j];
+          tempPath.lineTo(coordinates[0], coordinates[1]);
+          tempPath.moveTo(coordinates[0], coordinates[1]);
+          this.ctx.strokeStyle = this.pathPoints[i].color;
+          this.ctx.stroke(tempPath);
+        }, timeoutMultiplier*50);
+        timeoutMultiplier += 1;
+      }
+    }
+
+  }
+
   setImgBG(e) {
     const fileName = e.target.files[0].name;
     const reader = new FileReader();
@@ -158,6 +221,12 @@ export default class EtchASketch {
       this.pathsCount += 1;
       this.currentLineColor = color;
       this.paths[this.pathsCount] = { path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth };
+      this.persist();
+      this.pathPoints[this.pathsCount] = { 
+        points: [[this.currentLineX, this.currentLineY]], 
+        color: this.currentLineColor, 
+        lineWidth: this.currentLineWidth 
+      };
       this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
       this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
       this.ctx.strokeStyle = color;
@@ -179,10 +248,10 @@ export default class EtchASketch {
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
     if (this.etchBGImg && this.showImg) this.drawImg();
     if ($("body").hasClass("body-glow")) {
-      $("canvas").css("background", "linear-gradient(135deg, #131313 0%,  #000000 100%)");
+      $(".etch-space").css("background", "linear-gradient(135deg, #131313 0%,  #000000 100%)");
       this.reStroke();
     } else {
-      $("canvas").css("background", this.etchBG);
+      $(".etch-space").css("background", this.etchBG);
       this.reStroke();
     }
   }
@@ -220,6 +289,7 @@ export default class EtchASketch {
       this.ctx.stroke(this.paths[this.pathsCount].path);
     }
     this.leftKnobRotation = this.leftKnobDraggable[0].rotation;
+    this.pathPoints[this.pathsCount].points.push([this.currentLineX, this.currentLineY]);
   }
 
   turnRightKnob(e) {
@@ -235,6 +305,7 @@ export default class EtchASketch {
       this.ctx.stroke(this.paths[this.pathsCount].path);
     }
     this.rightKnobRotation = this.rightKnobDraggable[0].rotation;
+    this.pathPoints[this.pathsCount].points.push([this.currentLineX, this.currentLineY]);
   }
 
   startShakeTimer() {
@@ -298,6 +369,7 @@ export default class EtchASketch {
     if (this.etchBGImg && this.showImg) this.drawImg();
     this.paths = {};
     this.pathsCount = 0;
+    this.persist();
     this.paths[this.pathsCount] = { path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth };
     this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
     // this.sketchArea.animate(this.ctx);
@@ -366,11 +438,21 @@ export default class EtchASketch {
       this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
       this.ctx.stroke(this.paths[this.pathsCount].path);
     }
+
+    this.pathPoints[this.pathsCount].points.push([this.currentLineX, this.currentLineY]);
   }
 
   play() {
     this.running = true;
     this.animate();
+  }
+
+  persist() {
+    // localStorage.setItem("paths", JSON.stringify(this.paths));
+    // localStorage.setItem("pathsCount", JSON.stringify(this.pathsCount));
+    // localStorage.setItem("background", JSON.stringify(this.etchBG));
+    // localStorage.setItem("currentLineX", JSON.stringify(this.currentLineX));
+    // localStorage.setItem("currentLineY", JSON.stringify(this.currentLineY));
   }
 
   restart() {
@@ -380,13 +462,27 @@ export default class EtchASketch {
     this.animate();
     //set starting position
     // this.ctx.lineWidth = 1;
-    this.paths[this.pathsCount] = {path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth};
-    // this.ctx.beginPath();
-    this.currentLineX = this.dimensions.width / 2;
-    this.currentLineY = this.dimensions.height / 2;
-    this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
-    // this.ctx.lineTo(140, 140);
-    // this.ctx.stroke();
+    // if (JSON.parse(localStorage.getItem("pathsCount")) > 10) {
+    //   this.paths = JSON.parse(localStorage.getItem("paths"));
+    //   this.pathsCount = JSON.parse(localStorage.getItem("pathsCount"));
+    //   this.etchBG = JSON.parse(localStorage.getItem("background"));
+    //   this.currentLineX = JSON.parse(localStorage.getItem("currentLineX"));
+    //   this.currentLineY = JSON.parse(localStorage.getItem("currentLineY"));
+    //   $(".etch-space").css("background", this.etchBG);
+    //   this.reStroke();
+    // } else {
+      this.paths[this.pathsCount] = {path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth};
+      // this.persist();
+      this.currentLineX = this.dimensions.width / 2;
+      this.currentLineY = this.dimensions.height / 2;
+      this.pathPoints[this.pathsCount] = {
+        points: [[this.currentLineX, this.currentLineY]],
+        color: this.currentLineColor,
+        lineWidth: this.currentLineWidth
+      };
+      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+    // }
+
   }
     
   
