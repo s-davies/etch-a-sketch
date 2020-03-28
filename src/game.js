@@ -75,6 +75,7 @@ export default class EtchASketch {
       allowEmpty: false,
       showInput: true,
       containerClassName: 'color-picker-container',
+      localStorageKey: "line-color-picker",
       change: (color) => { this.changeLineColor(color.toHexString()) }
     });
 
@@ -84,9 +85,11 @@ export default class EtchASketch {
       allowEmpty: false,
       showInput: true,
       containerClassName: 'color-picker-container',
+      localStorageKey: "bg-color-picker",
       change: (color) => { 
-        this.etchBG = color;
-        $(".etch-space").css("background", color); 
+        this.etchBG = color.toHexString();
+        $(".etch-space").css("background", color);
+        this.persist();
       }
     });
 
@@ -487,6 +490,8 @@ export default class EtchASketch {
 
   persist() {
     localStorage.setItem("pathPoints", JSON.stringify(this.pathPoints));
+    localStorage.setItem("etchBG", JSON.stringify(this.etchBG));
+    localStorage.setItem("currentLineColor", JSON.stringify(this.currentLineColor));
     // localStorage.setItem("paths", JSON.stringify(this.paths));
     // localStorage.setItem("pathsCount", JSON.stringify(this.pathsCount));
     // localStorage.setItem("background", JSON.stringify(this.etchBG));
@@ -512,6 +517,14 @@ export default class EtchASketch {
     // } else {
       if (localStorage.getItem("pathPoints")) {
         this.pathPoints = JSON.parse(localStorage.getItem("pathPoints"));
+        this.etchBG = JSON.parse(localStorage.getItem("etchBG"));
+        this.currentLineColor = JSON.parse(localStorage.getItem("currentLineColor"));
+        $(".etch-space").css("background", this.etchBG);
+        $("#color-picker").val(this.currentLineColor);
+        //don't change the color picker display color if the user has never changed the background
+        if (this.etchBG !== "linear-gradient(135deg, #c9c6c6 0%,  #aaaaaa 100%)") {
+          $("#bg-color-picker").val(this.etchBG);
+        }
         this.currentLineX = this.pathPoints[0].points[0][0];
         this.currentLineY = this.pathPoints[0].points[0][1];
         this.reDraw();
