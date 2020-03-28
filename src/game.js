@@ -150,17 +150,29 @@ export default class EtchASketch {
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
     let timeoutMultiplier = 0;
     let that = this;
-    for (let i = 0; i <= this.pathsCount; i++) {
+    this.paths = {};
+    
+    for (let i = 0; i < Object.keys(this.pathPoints).length; i++) {
       const points = this.pathPoints[i].points;
-      let tempPath = new Path2D();
+      // let tempPath = new Path2D();
+      this.pathsCount = i;
+      this.currentLineColor = this.pathPoints[i].color;
+      this.paths[this.pathsCount] = { path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth };
+
       for (let j = 0; j < points.length; j++) {
-        // debugger
         setTimeout(() => {
           const coordinates = points[j];
-          tempPath.lineTo(coordinates[0], coordinates[1]);
-          tempPath.moveTo(coordinates[0], coordinates[1]);
-          this.ctx.strokeStyle = this.pathPoints[i].color;
-          this.ctx.stroke(tempPath);
+          this.paths[i].path.lineTo(coordinates[0], coordinates[1]);
+          this.paths[i].path.moveTo(coordinates[0], coordinates[1]);
+          this.currentLineX = coordinates[0];
+          this.currentLineY = coordinates[1];
+          if ($("body").hasClass("body-glow")) {
+            this.ctx.strokeStyle = "#03f111";
+          } else {
+            this.ctx.strokeStyle = this.pathPoints[i].color;
+          }
+          this.ctx.stroke(this.paths[i].path);
+
           if (points[j - 1] && coordinates[0] > points[j-1][0]) {
             that.leftKnobRotation += KNOBSPEED;
             $('.left-front').css("transform", "rotateZ(" + that.leftKnobRotation + "deg)");
@@ -177,11 +189,11 @@ export default class EtchASketch {
             that.rightKnobRotation += KNOBSPEED;
             $('.right-front').css("transform", "rotateZ(" + that.rightKnobRotation + "deg)");
           }
-        }, timeoutMultiplier*50);
+        }, timeoutMultiplier*20);
         timeoutMultiplier += 1;
       }
     }
-
+    
   }
 
   setImgBG(e) {
@@ -238,12 +250,12 @@ export default class EtchASketch {
       this.pathsCount += 1;
       this.currentLineColor = color;
       this.paths[this.pathsCount] = { path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth };
-      this.persist();
       this.pathPoints[this.pathsCount] = { 
         points: [[this.currentLineX, this.currentLineY]], 
         color: this.currentLineColor, 
         lineWidth: this.currentLineWidth 
       };
+      this.persist();
       this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
       this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
       this.ctx.strokeStyle = color;
@@ -307,6 +319,7 @@ export default class EtchASketch {
     }
     this.leftKnobRotation = this.leftKnobDraggable[0].rotation;
     this.pathPoints[this.pathsCount].points.push([this.currentLineX, this.currentLineY]);
+    this.persist();
   }
 
   turnRightKnob(e) {
@@ -323,6 +336,7 @@ export default class EtchASketch {
     }
     this.rightKnobRotation = this.rightKnobDraggable[0].rotation;
     this.pathPoints[this.pathsCount].points.push([this.currentLineX, this.currentLineY]);
+    this.persist();
   }
 
   startShakeTimer() {
@@ -386,6 +400,12 @@ export default class EtchASketch {
     if (this.etchBGImg && this.showImg) this.drawImg();
     this.paths = {};
     this.pathsCount = 0;
+    this.pathPoints = {};
+    this.pathPoints[this.pathsCount] = {
+      points: [[this.currentLineX, this.currentLineY]],
+      color: this.currentLineColor,
+      lineWidth: this.currentLineWidth
+    };
     this.persist();
     this.paths[this.pathsCount] = { path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth };
     this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
@@ -457,6 +477,7 @@ export default class EtchASketch {
     }
 
     this.pathPoints[this.pathsCount].points.push([this.currentLineX, this.currentLineY]);
+    this.persist();
   }
 
   play() {
@@ -465,6 +486,7 @@ export default class EtchASketch {
   }
 
   persist() {
+    localStorage.setItem("pathPoints", JSON.stringify(this.pathPoints));
     // localStorage.setItem("paths", JSON.stringify(this.paths));
     // localStorage.setItem("pathsCount", JSON.stringify(this.pathsCount));
     // localStorage.setItem("background", JSON.stringify(this.etchBG));
@@ -488,16 +510,23 @@ export default class EtchASketch {
     //   $(".etch-space").css("background", this.etchBG);
     //   this.reStroke();
     // } else {
-      this.paths[this.pathsCount] = {path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth};
-      // this.persist();
-      this.currentLineX = this.dimensions.width / 2;
-      this.currentLineY = this.dimensions.height / 2;
-      this.pathPoints[this.pathsCount] = {
-        points: [[this.currentLineX, this.currentLineY]],
-        color: this.currentLineColor,
-        lineWidth: this.currentLineWidth
-      };
-      this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      if (localStorage.getItem("pathPoints")) {
+        this.pathPoints = JSON.parse(localStorage.getItem("pathPoints"));
+        this.currentLineX = this.pathPoints[0].points[0][0];
+        this.currentLineY = this.pathPoints[0].points[0][1];
+        this.reDraw();
+      } else {
+        this.paths[this.pathsCount] = {path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth};
+        this.currentLineX = this.dimensions.width / 2;
+        this.currentLineY = this.dimensions.height / 2;
+        this.pathPoints[this.pathsCount] = {
+          points: [[this.currentLineX, this.currentLineY]],
+          color: this.currentLineColor,
+          lineWidth: this.currentLineWidth
+        };
+        this.persist();
+        this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
+      }
     // }
 
   }
