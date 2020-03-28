@@ -149,6 +149,7 @@ export default class EtchASketch {
   reDraw() {
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
     let timeoutMultiplier = 0;
+    let that = this;
     for (let i = 0; i <= this.pathsCount; i++) {
       const points = this.pathPoints[i].points;
       let tempPath = new Path2D();
@@ -160,6 +161,22 @@ export default class EtchASketch {
           tempPath.moveTo(coordinates[0], coordinates[1]);
           this.ctx.strokeStyle = this.pathPoints[i].color;
           this.ctx.stroke(tempPath);
+          if (points[j - 1] && coordinates[0] > points[j-1][0]) {
+            that.leftKnobRotation += KNOBSPEED;
+            $('.left-front').css("transform", "rotateZ(" + that.leftKnobRotation + "deg)");
+          }
+          if (points[j - 1] && coordinates[0] < points[j - 1][0]) {
+            that.leftKnobRotation -= KNOBSPEED;
+            $('.left-front').css("transform", "rotateZ(" + that.leftKnobRotation + "deg)");
+          }
+          if (points[j - 1] && coordinates[1] > points[j - 1][1]) {
+            that.rightKnobRotation -= KNOBSPEED;
+            $('.right-front').css("transform", "rotateZ(" + that.rightKnobRotation + "deg)");
+          }
+          if (points[j - 1] && coordinates[1] < points[j - 1][1]) {
+            that.rightKnobRotation += KNOBSPEED;
+            $('.right-front').css("transform", "rotateZ(" + that.rightKnobRotation + "deg)");
+          }
         }, timeoutMultiplier*50);
         timeoutMultiplier += 1;
       }
