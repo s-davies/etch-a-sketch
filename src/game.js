@@ -28,6 +28,7 @@ export default class EtchASketch {
     this.pathPoints = {};
     this.currentLineColor = "black";
     this.currentLineWidth = "black";
+    this.glowing = false;
     this.etchBG = "linear-gradient(135deg, #c9c6c6 0%,  #aaaaaa 100%)";
     this.etchBGImg = null;
     this.showImg = true;
@@ -280,12 +281,15 @@ export default class EtchASketch {
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
     if (this.etchBGImg && this.showImg) this.drawImg();
     if ($("body").hasClass("body-glow")) {
+      this.glowing = true;
       $(".etch-space").css("background", "linear-gradient(135deg, #131313 0%,  #000000 100%)");
       this.reStroke();
     } else {
+      this.glowing = false;
       $(".etch-space").css("background", this.etchBG);
       this.reStroke();
     }
+    this.persist();
   }
 
   reStroke() {
@@ -492,6 +496,7 @@ export default class EtchASketch {
     localStorage.setItem("pathPoints", JSON.stringify(this.pathPoints));
     localStorage.setItem("etchBG", JSON.stringify(this.etchBG));
     localStorage.setItem("currentLineColor", JSON.stringify(this.currentLineColor));
+    localStorage.setItem("glowing", JSON.stringify(this.glowing));
     // localStorage.setItem("paths", JSON.stringify(this.paths));
     // localStorage.setItem("pathsCount", JSON.stringify(this.pathsCount));
     // localStorage.setItem("background", JSON.stringify(this.etchBG));
@@ -519,6 +524,7 @@ export default class EtchASketch {
         this.pathPoints = JSON.parse(localStorage.getItem("pathPoints"));
         this.etchBG = JSON.parse(localStorage.getItem("etchBG"));
         this.currentLineColor = JSON.parse(localStorage.getItem("currentLineColor"));
+        this.glowing = JSON.parse(localStorage.getItem("glowing"));
         $(".etch-space").css("background", this.etchBG);
         $("#color-picker").val(this.currentLineColor);
         //don't change the color picker display color if the user has never changed the background
@@ -528,6 +534,7 @@ export default class EtchASketch {
         this.currentLineX = this.pathPoints[0].points[0][0];
         this.currentLineY = this.pathPoints[0].points[0][1];
         this.reDraw();
+        if (this.glowing) this.activateGlowMode();
       } else {
         this.paths[this.pathsCount] = {path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth};
         this.currentLineX = this.dimensions.width / 2;
