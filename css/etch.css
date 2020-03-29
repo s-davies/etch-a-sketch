@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: absolute;
+  /* position: absolute; */
   height: 100vh;
   /* box-shadow: 0px 0px 10px 5px gray; */
   background: transparent;
@@ -18,7 +18,15 @@
   font-family: 'Londrina Sketch', cursive;
   font-size: 24px;
   text-transform: uppercase;
-  left: 0px;
+  
+}
+
+.sidebar-left {
+  /* left: 0px; */
+}
+
+.sidebar-right {
+  /* right: 0px; */
 }
 
 .sidebar-glow {
@@ -152,7 +160,7 @@
 
 body {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   height: 100vh;
   background: rgb(255, 255, 255);
@@ -185,7 +193,9 @@ body {
   justify-content: space-between;
 }
 
-
+.sidebar i {
+  padding-left: 10px;
+}
 
 .etch-border {
   display: flex;
@@ -201,6 +211,7 @@ background: linear-gradient(135deg, rgba(255,24,49,1) 0%, rgba(200,6,27,1) 100%)
   -5px -5px 8px 0.1px rgb(51, 51, 51) inset,
   5px 5px 8px 0.1px grey;
   cursor: grab;
+  z-index: 9;
 }
 
 .etch-border-glow {
@@ -346,7 +357,7 @@ background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
   width: 70px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(242,242,242,1) 0%, rgba(255,255,255,1) 6%, rgba(208,208,208,1) 100%);
-  z-index: 1;
+  z-index: 10;
 }
 
 .knob-inner-glow {
