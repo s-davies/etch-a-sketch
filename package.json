@@ -20,6 +20,9 @@
   "dependencies": {
     "canvas2image": "^1.0.5",
     "html2canvas": "^1.0.0-rc.5",
+    "jquery": "^3.4.1",
+    "jquery-ui": "^1.12.1",
+    "jquery-ui-touch-punch": "^0.2.3",
     "merge-images": "^2.0.0",
     "merge-images-v2": "^2.0.1",
     "puppeteer": "^2.1.1",
