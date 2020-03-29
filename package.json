@@ -23,6 +23,7 @@
     "merge-images": "^2.0.0",
     "merge-images-v2": "^2.0.1",
     "puppeteer": "^2.1.1",
+    "shake.js": "^1.2.2",
     "spectrum-colorpicker2": "^2.0.0"
   }
 }
