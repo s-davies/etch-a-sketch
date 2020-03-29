@@ -109,6 +109,8 @@ export default class EtchASketch {
 
     $("#redraw").on("click", this.reDraw);
 
+    $("#clear").on("click", this.clearSketch);
+
     // $("#download-button").on("click", () => {
       // html2canvas(document.getElementsByClassName("etch-border")[0]).then(function (cvs) {
       //   let image = cvs.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
