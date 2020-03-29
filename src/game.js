@@ -74,7 +74,6 @@ export default class EtchASketch {
       type: "color",
       showAlpha: false,
       allowEmpty: false,
-      showInput: true,
       containerClassName: 'color-picker-container',
       localStorageKey: "line-color-picker",
       change: (color) => { this.changeLineColor(color.toHexString()) }
@@ -84,7 +83,6 @@ export default class EtchASketch {
       type: "color",
       showAlpha: false,
       allowEmpty: false,
-      showInput: true,
       containerClassName: 'color-picker-container',
       localStorageKey: "bg-color-picker",
       change: (color) => { 
@@ -276,6 +274,7 @@ export default class EtchASketch {
     $(".fas").toggleClass("fas-glow");
     $(".instructions").toggleClass("instructions-glow");
     $(".knob-inner").toggleClass("knob-inner-glow");
+    $(".sidebar").toggleClass("sidebar-glow");
     // $("canvas").toggleClass("canvas-glow");
     
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
@@ -534,7 +533,10 @@ export default class EtchASketch {
         this.currentLineX = this.pathPoints[0].points[0][0];
         this.currentLineY = this.pathPoints[0].points[0][1];
         this.reDraw();
-        if (this.glowing) this.activateGlowMode();
+        if (this.glowing) {
+          $("#glow-button input").prop('checked', true);
+          this.activateGlowMode();
+        }
       } else {
         this.paths[this.pathsCount] = {path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth};
         this.currentLineX = this.dimensions.width / 2;
