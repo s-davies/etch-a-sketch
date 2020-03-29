@@ -195,6 +195,11 @@ body {
 
 .sidebar i {
   padding-left: 10px;
+  color: black;
+}
+
+.sidebar i:hover {
+  color: rgba(255,24,49,1);
 }
 
 .etch-border {
