@@ -25,26 +25,34 @@
   <div class="sidebar sidebar-left">
     
     
-    <label>Line Color <input id="bg-color-picker" value='#BAB8B8' /></label>
-    <label>Background Color <input id="color-picker" value='black' /></label>
-    <label>Upload Image
+    <div>Line Color <input id="bg-color-picker" value='#BAB8B8' /></div>
+    <div>Background Color <input id="color-picker" value='black' /></div>
+    <div>Upload Image
       <label class="options-button" for="file">Select file</label>
       <input id="file" type="file" accept="image/*" >
-    </label>
-    <label class="toggle"> Show Background Image
-      <button class="toggle"></button>
-    </label>
-    <label>Glow Mode
-      <!-- <button id="glow-button">Glow in the Dark</button> -->
-      <div id="glow-button" class="toggle-div">
-        <input type="checkbox" class="check">
+    </div>
+    <div class="toggle"> 
+      <label>
+        Background Image
+      </label>
+      <div id="toggle-img-button" class="toggle-div">
+        <input type="checkbox" class="check" checked="true">
         <b class="b switch"></b>
         <b class="b track"></b>
       </div>
-    </label>
-    <label>ReDraw Picture
+    </div>
+    <div>
+      <label>Glow Mode
+      </label>
+          <div id="glow-button" class="toggle-div">
+            <input type="checkbox" class="check">
+            <b class="b switch"></b>
+            <b class="b track"></b>
+          </div>
+    </div>
+    <div>ReDraw Picture
       <button class="options-button" id="redraw">Animate</button>
-    </label>
+    </div>
     
   </div>
 

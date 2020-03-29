@@ -96,7 +96,7 @@ export default class EtchASketch {
       this.setImgBG(event);
     });
 
-    $(".toggle").on("click", () => {
+    $("#toggle-img-button").on("click", () => {
       this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
       if (this.showImg) {
         this.showImg = false;
@@ -275,6 +275,8 @@ export default class EtchASketch {
     $(".instructions").toggleClass("instructions-glow");
     $(".knob-inner").toggleClass("knob-inner-glow");
     $(".sidebar").toggleClass("sidebar-glow");
+    $(".options-button").toggleClass("options-button-glow");
+    // $(".sp-replacer").toggleClass("sp-replacer-glow");
     // $("canvas").toggleClass("canvas-glow");
     
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
