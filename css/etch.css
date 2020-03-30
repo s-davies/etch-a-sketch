@@ -11,15 +11,17 @@
   flex-direction: column;
   justify-content: center;
   /* position: absolute; */
-  height: 100vh;
+  /* height: 100vh; */
   /* box-shadow: 0px 0px 10px 5px gray; */
   background: transparent;
   /* background: linear-gradient(0deg, rgba(255,24,49,1) 0%,  #aaaaaa 120%); */
   /* font-family: 'Londrina Sketch', cursive; */
-  font-family: 'Cantarell', sans-serif;
+  font-family: 'Lato', sans-serif;
+
   font-size: 16px;
   /* text-transform: uppercase; */
   color: black;
+  flex-shrink: 100;
 }
 
 .sidebar-left {
@@ -103,8 +105,8 @@
 
 .toggle-div {
   position: relative;
-  width: 60px;
-  height: 20px;
+  width: 92px;
+  height: 25px;
   border-radius: 100px;
   background-color: #ddd;
   box-shadow: inset 0 0 2px 1px rgba(0,0,0,.05);
@@ -126,7 +128,7 @@
 
 .check:checked ~ .switch {
   right: 2px;
-  left: 32px;
+  left: 50px;
   transition: .35s cubic-bezier(0.785, 0.135, 0.150, 0.860);
   transition-property: left, right;
   transition-delay: .05s, 0s;
@@ -138,7 +140,7 @@
   left: 2px;
   top: 2px;
   bottom: 2px;
-  right: 32px;
+  right: 50px;
   background-color: #fff;
   border-radius: 36px;
   z-index: 1;
@@ -172,9 +174,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* height: 100vh; */
+  height: 100vh;
   background: rgb(255, 255, 255);
   position: relative;
+  flex-shrink: 0;
 }
 
 .body-glow {
@@ -183,6 +186,11 @@ body {
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.sidebar .sp-replacer {
+  min-width: 88px;
+  max-width: 88px;
 }
 
 .sidebar .sp-replacer-glow {
@@ -196,6 +204,10 @@ body {
 .sidebar .toggle {
   display: none;
   
+}
+
+.toggle-show > label {
+  margin-right: 10px;
 }
 
 .sidebar .toggle-show {
@@ -264,8 +276,10 @@ background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 85px;
-  width: 85px;
+  height: 68px;
+  width: 68px;
+  /* height: 85px;
+  width: 85px; */
   border-radius: 50%;
   background-color: white;
   position: absolute;
@@ -313,16 +327,18 @@ background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
 }
 
 .cursive {
-  font-size: 72px;
+  font-size: 58px;
   font-family: 'Qwigley', cursive;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 8px;
 }
 
 .italic {
-  font-size: 24px;
-  font-family: 'Cantarell', sans-serif;
-  font-weight: 700;
+  font-size: 19px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  letter-spacing: 3px;
 }
 
 .left {
@@ -336,7 +352,7 @@ background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
 .fas {
   color: rgb(241, 89, 89);
   text-shadow: -1px -1px 1px rgb(255, 213, 213), 1px 1px 1px rgb(161, 65, 65);
-  font-size: 28px;
+  font-size: 24px;
   position: absolute;
 
 }
@@ -347,28 +363,30 @@ background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
 }
 
 .fa-arrows-alt-h {
-  bottom: 110px;
-  left: 50px;
+  bottom: 94px;
+  left: 44px;
   transform: scale(1.5,1);
 }
 
 .fa-arrows-alt-v {
-  bottom: 125px;
-  right: 55px;
+  bottom: 104px;
+  right: 48px;
   transform: scale(1,1.5);
 }
 
 .instructions {
   color: rgb(241, 89, 89);
   text-shadow: -1px -1px 1px rgb(255, 213, 213), 1px 1px 1px rgb(161, 65, 65);
-  font-size: 18x;
+  font-size: 16px;
   position: absolute;
   text-align: center;
   text-transform: uppercase;
-  bottom: 30px;
+  bottom: 24px;
+  /* bottom: 30px; */
   font-family: 'Roboto', sans-serif;
   letter-spacing: 1.5px;
-  line-height: 30px;
+  line-height: 24px;
+  /* line-height: 30px; */
 }
 
 .instructions-glow {
@@ -377,8 +395,10 @@ background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
 }
 
 .knob-inner {
-  height: 70px;
-  width: 70px;
+  height: 56px;
+  width: 56px;
+  /* height: 70px;
+  width: 70px; */
   border-radius: 50%;
   background: radial-gradient(circle, rgba(242,242,242,1) 0%, rgba(255,255,255,1) 6%, rgba(208,208,208,1) 100%);
   z-index: 10;
@@ -448,4 +468,130 @@ background: linear-gradient(135deg, rgb(80, 80, 80) 0%, rgb(15, 15, 15) 100%);
   transform: rotate(170deg);
 }
 
+#media-personal-links {
+  display: none;
+}
 
+
+
+/* ---------------- Media Queries ------------------------------------------ */
+@media only screen and (max-width: 1240px) {
+  .sidebar-right {
+    display: none;
+  }
+  .etch-border {
+    margin-right: 40px;
+  }
+
+  #media-personal-links {
+    display: flex;
+    justify-content: space-between;
+  }
+  .sidebar #media-personal-links > div {
+  display: flex;
+  justify-content: space-between;
+    width: 100px;
+  }
+}
+
+@media only screen and (max-width: 1010px) {
+  /* .sidebar-right {
+    display: none;
+  }
+  .etch-border {
+    margin-right: 40px;
+  }
+
+  #media-personal-links {
+    display: flex;
+    justify-content: space-between;
+  } */
+
+  .sidebar > div > label:first-of-type {
+    display: none;
+  }
+
+  .sidebar > div {
+    display: flex;
+    justify-content: flex-start;
+  }
+  .options-button {
+    margin: 0;
+  }
+
+  .sidebar i {
+    padding: 0;
+    margin: 0px;
+  }
+
+  .sidebar #media-personal-links {
+    display: block;
+  }
+
+  .sidebar #media-personal-links > div {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .sidebar {
+    position: relative;
+    top: 0px;
+  }
+
+  /* .sidebar .sp-replacer::before {
+    content: "Line";
+    z-index: 1;
+    top: 0px;
+    position: absolute;
+    color: rgb(232, 232, 232);
+    text-shadow: -0px -0px 0px #fff, 2px 2px 2px #000;
+    font-size: 20px;
+  } */
+  /* .sidebar .picker-div::before {
+    z-index: 1;
+    top: -10px;
+    position: absolute;
+    color: black;
+    font-size: 20px;
+  } */
+
+  #line-picker-div::before {
+    content: "Line";
+    z-index: 1;
+    top: -5px;
+    position: absolute;
+    /* color: black; */
+    /* text-shadow: -0px -0px 0px #fff, 2px 2px 2px #000; */
+    font-size: 16px;
+  }
+
+  #bg-picker-div::before {
+    content: "Background";
+    z-index: 1;
+    top: 62px;
+    position: absolute;
+    /* color: black; */
+    /* text-shadow: -0px -0px 0px #fff, 2px 2px 2px #000; */
+    font-size: 16px;
+  }
+
+  #glow-mode-div::before {
+    content: "Glow";
+    z-index: 1;
+    top: 130px;
+    position: absolute;
+    /* color: black; */
+    /* text-shadow: -0px -0px 0px #fff, 2px 2px 2px #000; */
+    font-size: 16px;
+  }
+
+  #bg-toggle-div::before {
+    content: "BG Image";
+    z-index: 1;
+    top: 194px;
+    position: absolute;
+    /* color: black; */
+    /* text-shadow: -0px -0px 0px #fff, 2px 2px 2px #000; */
+    font-size: 16px;
+  }
+}

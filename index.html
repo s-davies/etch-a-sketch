@@ -6,12 +6,13 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"> -->
   <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-  <script src="jquery.ui.touch-punch.min.js"></script>
+  <!-- <script src="jquery.ui.touch-punch.min.js"></script> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Qwigley&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Cantarell:400i,700i&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Londrina+Sketch&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400i,700i,900i&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Londrina+Sketch&display=swap" rel="stylesheet"> -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>
@@ -27,9 +28,9 @@
   <div class="sidebar sidebar-left">
     
     
-    <div>Line Color <input id="bg-color-picker" value='#BAB8B8' /></div>
-    <div>Background Color <input id="color-picker" value='black' /></div>
-    <div>
+    <div id="line-picker-div" class="picker-div"><label>Line Color</label> <input id="color-picker" value='black' /></div>
+    <div id="bg-picker-div" class="picker-div"> <label>Background Color</label>  <input id="bg-color-picker" value='#BAB8B8' /></div>
+    <div id="glow-mode-div">
       <label>Glow Mode
       </label>
           <div id="glow-button" class="toggle-div">
@@ -38,7 +39,7 @@
             <b class="b track"></b>
           </div>
     </div>
-    <div class="toggle">
+    <div id="bg-toggle-div" class="toggle">
       <label>
         Background Image
       </label>
@@ -48,18 +49,26 @@
         <b class="b track"></b>
       </div>
     </div>
-    <div>Upload Image
-      <label class="options-button" for="file" id="upload">Select</label>
+    <div>
+      <label>Upload Image</label>
+      <label class="options-button" for="file" id="upload">Upload</label>
       <input id="file" type="file" accept="image/*" >
     </div>
     
-    <div>Re-draw Sketch
+    <div><label>Re-draw Sketch</label>
       <button class="options-button" id="redraw">Animate</button>
     </div>
-    <div>Clear Sketch
+    <div><label>Clear Sketch</label>
       <button class="options-button" id="clear">Clear</button>
     </div>
-    
+    <div id="media-personal-links">
+      <label>Steven Davies</label>
+      <div>
+        <a href="https://github.com/s-davies/etch-a-sketch"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/steven-davies-bb700119b/"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://angel.co/steven-davies-5"><i class="fab fa-angellist"></i></a>
+      </div>
+    </div>
   </div>
   
   <div class="etch-border">
