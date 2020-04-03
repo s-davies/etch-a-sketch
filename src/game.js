@@ -318,12 +318,12 @@ export default class EtchASketch {
   }
 
   turnLeftKnob(e) {
-    if (this.leftKnobDraggable[0].rotation < this.leftKnobRotation) {
+    if (this.leftKnobDraggable[0].rotation < this.leftKnobRotation && this.currentLineX > 0) {
       this.currentLineX -= KEYSPEED/2;
       this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
       this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
       this.ctx.stroke(this.paths[this.pathsCount].path);
-    } else if (this.leftKnobDraggable[0].rotation > this.leftKnobRotation) {
+    } else if (this.leftKnobDraggable[0].rotation > this.leftKnobRotation && this.currentLineX < this.dimensions.width) {
       this.currentLineX += KEYSPEED/2;
       this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
       this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
@@ -335,12 +335,12 @@ export default class EtchASketch {
   }
 
   turnRightKnob(e) {
-    if (this.rightKnobDraggable[0].rotation < this.rightKnobRotation) {
+    if (this.rightKnobDraggable[0].rotation < this.rightKnobRotation && this.currentLineY < this.dimensions.height) {
       this.currentLineY += KEYSPEED / 2;
       this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
       this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
       this.ctx.stroke(this.paths[this.pathsCount].path);
-    } else if (this.rightKnobDraggable[0].rotation > this.rightKnobRotation) {
+    } else if (this.rightKnobDraggable[0].rotation > this.rightKnobRotation && this.currentLineY > 0) {
       this.currentLineY -= KEYSPEED / 2;
       this.paths[this.pathsCount].path.lineTo(this.currentLineX, this.currentLineY);
       this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
