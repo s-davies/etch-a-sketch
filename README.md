@@ -34,6 +34,8 @@ See your sketch come to life with Re-Draw
 
 Built with JavaScript and jQuery
 
+**Packages**
+
 # Future Improvements
 
 - Add demo sketches
