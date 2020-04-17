@@ -153,6 +153,7 @@ export default class EtchASketch {
 
   reDraw() {
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+    if (this.showImg && this.etchBGImg) this.drawImg();
     let timeoutMultiplier = 0;
     let that = this;
     this.paths = {};

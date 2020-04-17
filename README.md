@@ -33,8 +33,8 @@ See your sketch come to life with Re-Draw
 # Technologies
 
 Built with JavaScript and jQuery
-
-**Packages**
+<!-- 
+**Packages** -->
 
 # Future Improvements
 
