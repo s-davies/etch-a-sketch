@@ -158,7 +158,6 @@ export default class EtchASketch {
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
     if (this.showImg && this.etchBGImg) this.drawImg();
     let timeoutMultiplier = 0;
-    let that = this;
     this.paths = {};
     
     for (let i = 0; i < Object.keys(this.pathPoints).length; i++) {
@@ -183,20 +182,20 @@ export default class EtchASketch {
           this.ctx.stroke(this.paths[i].path);
 
           if (points[j - 1] && coordinates[0] > points[j-1][0]) {
-            that.leftKnobRotation += KNOBSPEED;
-            $('.left-front').css("transform", "rotateZ(" + that.leftKnobRotation + "deg)");
+            this.leftKnobRotation += KNOBSPEED;
+            $('.left-front').css("transform", "rotateZ(" + this.leftKnobRotation + "deg)");
           }
           if (points[j - 1] && coordinates[0] < points[j - 1][0]) {
-            that.leftKnobRotation -= KNOBSPEED;
-            $('.left-front').css("transform", "rotateZ(" + that.leftKnobRotation + "deg)");
+            this.leftKnobRotation -= KNOBSPEED;
+            $('.left-front').css("transform", "rotateZ(" + this.leftKnobRotation + "deg)");
           }
           if (points[j - 1] && coordinates[1] > points[j - 1][1]) {
-            that.rightKnobRotation -= KNOBSPEED;
-            $('.right-front').css("transform", "rotateZ(" + that.rightKnobRotation + "deg)");
+            this.rightKnobRotation -= KNOBSPEED;
+            $('.right-front').css("transform", "rotateZ(" + this.rightKnobRotation + "deg)");
           }
           if (points[j - 1] && coordinates[1] < points[j - 1][1]) {
-            that.rightKnobRotation += KNOBSPEED;
-            $('.right-front').css("transform", "rotateZ(" + that.rightKnobRotation + "deg)");
+            this.rightKnobRotation += KNOBSPEED;
+            $('.right-front').css("transform", "rotateZ(" + this.rightKnobRotation + "deg)");
           }
         }, timeoutMultiplier*20);
         timeoutMultiplier += 1;
