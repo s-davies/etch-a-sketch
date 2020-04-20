@@ -36,6 +36,8 @@ Built with JavaScript and jQuery
 <!-- 
 **Packages** -->
 
+# Code Snippets
+
 # Future Improvements
 
 - Add demo sketches
