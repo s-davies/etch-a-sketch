@@ -1,5 +1,3 @@
-import SketchArea from "./sketch_area";
-
 const KEYSPEED = 2;
 const KNOBSPEED = 4;
 const SHAKE_DISTANCE = 20;
@@ -110,7 +108,12 @@ export default class EtchASketch {
     $("#redraw").on("click", this.reDraw);
 
     $("#clear").on("click", this.clearSketch);
-
+    $(".etch-border").on('mousedown', (e) => {
+      $(".etch-border").css("cursor", "grabbing");
+    });
+    $(".etch-border").on('mouseup', (e) => {
+      $(".etch-border").css("cursor", "grab");
+    });
     // $("#download-button").on("click", () => {
       // html2canvas(document.getElementsByClassName("etch-border")[0]).then(function (cvs) {
       //   let image = cvs.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
@@ -404,10 +407,7 @@ export default class EtchASketch {
 
 
   clearSketch() {
-    // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
-    // this.ctx.beginPath();
-    // this.currentLineX = this.dimensions.width / 2;
-    // this.currentLineY = this.dimensions.height / 2;
+
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
     //redraw an image if it has been uploaded
     if (this.etchBGImg && this.showImg) this.drawImg();
@@ -422,7 +422,7 @@ export default class EtchASketch {
     this.persist();
     this.paths[this.pathsCount] = { path: new Path2D(), color: this.currentLineColor, lineWidth: this.currentLineWidth };
     this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
-    // this.sketchArea.animate(this.ctx);
+
   }
 
   pressKey(e) {
@@ -493,39 +493,14 @@ export default class EtchASketch {
     this.persist();
   }
 
-  play() {
-    this.running = true;
-    this.animate();
-  }
-
   persist() {
     localStorage.setItem("pathPoints", JSON.stringify(this.pathPoints));
     localStorage.setItem("etchBG", JSON.stringify(this.etchBG));
     localStorage.setItem("currentLineColor", JSON.stringify(this.currentLineColor));
     localStorage.setItem("glowing", JSON.stringify(this.glowing));
-    // localStorage.setItem("paths", JSON.stringify(this.paths));
-    // localStorage.setItem("pathsCount", JSON.stringify(this.pathsCount));
-    // localStorage.setItem("background", JSON.stringify(this.etchBG));
-    // localStorage.setItem("currentLineX", JSON.stringify(this.currentLineX));
-    // localStorage.setItem("currentLineY", JSON.stringify(this.currentLineY));
   }
 
   restart() {
-    this.running = false;
-    this.sketchArea = new SketchArea(this.dimensions);
-    
-    this.animate();
-    //set starting position
-    // this.ctx.lineWidth = 1;
-    // if (JSON.parse(localStorage.getItem("pathsCount")) > 10) {
-    //   this.paths = JSON.parse(localStorage.getItem("paths"));
-    //   this.pathsCount = JSON.parse(localStorage.getItem("pathsCount"));
-    //   this.etchBG = JSON.parse(localStorage.getItem("background"));
-    //   this.currentLineX = JSON.parse(localStorage.getItem("currentLineX"));
-    //   this.currentLineY = JSON.parse(localStorage.getItem("currentLineY"));
-    //   $(".etch-space").css("background", this.etchBG);
-    //   this.reStroke();
-    // } else {
       if (localStorage.getItem("pathPoints")) {
         this.pathPoints = JSON.parse(localStorage.getItem("pathPoints"));
         this.etchBG = JSON.parse(localStorage.getItem("etchBG"));
@@ -556,20 +531,6 @@ export default class EtchASketch {
         this.persist();
         this.paths[this.pathsCount].path.moveTo(this.currentLineX, this.currentLineY);
       }
-    // }
-
-  }
-    
-  
-
-  //redraw
-  animate() {
-    this.sketchArea.animate(this.ctx);
-    
-    //don't animate if game not running
-    if (this.running) {
-      requestAnimationFrame(this.animate.bind(this));
-    }
   }
 
 }

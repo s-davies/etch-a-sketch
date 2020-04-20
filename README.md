@@ -38,8 +38,3 @@ Built with JavaScript and jQuery
 
 # Code Snippets
 
-# Future Improvements
-
-- Add demo sketches
-- Detect accelerometer shakes on mobile
-- Change background picture rotation
