@@ -1,7 +1,7 @@
 ![alt text](images/Header.png)
 
 The Etch-A-Sketch has arrived for the next generation. Experience this new take on the classic drawing toy, and utilize novel functionality such as color choice and image tracing to bring your sketches to life.
-
+Flip
 [LIVE SITE](https://s-davies.github.io/etch-a-sketch/)
 
 ## Features
